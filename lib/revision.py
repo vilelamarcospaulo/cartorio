@@ -35,12 +35,10 @@ def to_revision(lines):
     if not valid_lines:
         logging.debug('No valid revision lines found')
         return ''
+        
+    # Each line[0] is (x0, y0, x1, y1, word, block_no, line_no, word_no)
+    uppermost_revision = min(valid_lines, key=lambda line: line[0][1])
+    result = uppermost_revision[0][4]
     
-    # Get first word from each line
-    revision_numbers = [line[0][4] for line in valid_lines]
-    
-    result = max(revision_numbers) if revision_numbers else ''
-    logging.debug(f'Found revision number: {result}')
-    # Return the highest revision number
     return result
 
