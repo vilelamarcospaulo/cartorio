@@ -13,7 +13,7 @@ def extract_words(pdf_path):
             logging.error(f'PDF {pdf_path} :: without any content')
             return None
 
-        logging.info(f'PDF {pdf_path} :: extracted {len(words)} words')
+        logging.debug(f'PDF {pdf_path} :: extracted {len(words)} words')
         return words
         
     except Exception as e:
@@ -83,7 +83,7 @@ def find_line_index(lines: list[list], search: str) -> int:
     for i, l in enumerate(lines):
         l_str = line_to_str(l)
         if l_str == search:
-            logging.info(f'pattern {search} :: index {i}')
+            logging.debug(f'pattern {search} :: index {i}')
             return i
     
 
