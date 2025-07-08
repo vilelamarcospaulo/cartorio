@@ -25,12 +25,33 @@ $ pyinstaller --onefile --icon=sh.ico main.py
 
 ## Usage
 
-1. Place your PDF files in the input directory
-2. Run the application:
-   ```
-   $ ./cartorio {directory_path}
-   ```
-3. The tool will process all PDFs and rename them according to the found information
+The tool can run in two modes:
+
+### Runner Mode
+Process all PDFs in a directory once:
+```
+$ ./cartorio runner /path/to/directory
+```
+
+### Watch Mode
+Watch a directory for new PDFs and process them automatically:
+```
+$ ./cartorio watch /path/to/directory
+```
+
+### Command Line Arguments
+```
+usage: cartorio [-h] {runner,watch} path
+
+Run in watcher or runner mode to process a folder.
+
+positional arguments:
+  {runner,watch}  Execution mode: runner or watcher
+  path           Path to the folder to process or observe
+
+options:
+  -h, --help     show this help message and exit
+```
 
 ## Directory Processing
 

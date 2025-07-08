@@ -12,22 +12,27 @@ def to_filename(stamp, rev):
 
     return f'SH_{tag}_{project}_{subject}_PR{board}_{rev}.pdf'
 
-def proccess_file(file_name):
-    words = extract_words(file_name)
+def proccess_file(file_path):
+    if not needs_processing(file_path):
+        logging.debug(f'ignored file {file_path}')
+        return
+
+    words = extract_words(file_path)
     lines = group_lines(words)
 
     rev = to_revision(lines)
     stamp = to_stamp(lines)
 
     base_name = to_filename(stamp, rev)
-    directory = os.path.dirname(file_name)
+    directory = os.path.dirname(file_path)
     new_file_name = os.path.join(directory, base_name)
+
     if os.path.exists(new_file_name):
         logging.error(f'{new_file_name} already exists')
     else:
         try:
-            os.rename(file_name, new_file_name)
-            logging.info(f'File successfully renamed from {file_name} to {new_file_name}')
+            os.rename(file_path, new_file_name)
+            logging.info(f'File successfully renamed from {file_path} to {new_file_name}')
         except OSError as e:
             logging.error(f'Error renaming file: {e}')
 
@@ -38,18 +43,11 @@ def process_folder(folder_path):
         
         # Separate files and directories
         items = [(f, os.path.join(folder_path, f)) for f in files]
+
         dirs = [path for _, path in items if os.path.isdir(path)]
-        files = [f for f, _ in items if os.path.isfile(os.path.join(folder_path, f))]
+        files = [path for _, path in items if os.path.isfile(path)]
         
-        def is_pdf(filename):
-            return filename.lower().endswith('.pdf')
-        
-        def needs_processing(filename):
-            return not filename.startswith('SH_')
-        
-        # Filter PDF files that need processing
-        pdf_files = filter(is_pdf, files)
-        files_to_process = filter(needs_processing, pdf_files)
+        files_to_process = filter(needs_processing, files)
         
         # Convert to list to get length for logging
         files_to_process = list(files_to_process)
@@ -70,3 +68,10 @@ def process_folder(folder_path):
 
     except Exception as e:
         logging.error(f'Error processing folder {folder_path}: {e}')
+
+
+
+def needs_processing(file_path):
+    filename = os.path.basename(file_path)
+    return (not filename.startswith('SH_')) and filename.lower().endswith('.pdf')
+
