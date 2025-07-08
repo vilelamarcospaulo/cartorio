@@ -61,8 +61,8 @@ def group_lines(words):
         line.sort(key=lambda x: x[0])  
         result.append(line)
 
-    result.sort(key = lambda x: x[0][0])
-    return result
+    return sorted(result, 
+                  key=lambda x: (x[0][1], x[0][0]))
     
    
 def find_line_index(lines: list[list], search: str) -> int:

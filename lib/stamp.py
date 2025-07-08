@@ -13,7 +13,7 @@ def to_tag(stamp):
     [project, _, _, _, _] = stamp
 
     if 'SINALIZAÇÃO' in project:
-        return 'SVC'
+        return 'SCV'
 
     return 'ARQ'
 
