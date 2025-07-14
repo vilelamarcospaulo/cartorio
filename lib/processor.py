@@ -1,16 +1,18 @@
 from lib.words import extract_words, group_lines
-from lib.stamp import to_stamp, to_tag
+from lib.stamp import Stamp, to_stamp
 from lib.revision import to_revision 
 
 import logging
 import os
 
-def to_filename(stamp, rev):
-    [project, board, _, subject, _] = stamp
-    tag = to_tag(stamp)
-    subject = subject[:6]
+def to_filename(stamp: Stamp, rev):
+    tag = stamp.to_tag() 
 
-    return f'SH_{tag}_{project}_{subject}_PR{board}_{rev}.pdf'
+    pre_hyphen = stamp.subject.split('-')[0].strip()
+    subject_words = pre_hyphen.split()
+    truncated_subject = '_'.join(word[:5] for word in subject_words)
+
+    return f'SH_{tag}_{stamp.project}_{truncated_subject}_PR{stamp.drawing}_{rev}.pdf'
 
 def proccess_file(file_path):
     if not needs_processing(file_path):
@@ -22,6 +24,10 @@ def proccess_file(file_path):
 
     rev = to_revision(lines)
     stamp = to_stamp(lines)
+
+    if not stamp:
+        logging.error('failed to load stamp')
+        return
 
     base_name = to_filename(stamp, rev)
     directory = os.path.dirname(file_path)
@@ -68,8 +74,6 @@ def process_folder(folder_path):
 
     except Exception as e:
         logging.error(f'Error processing folder {folder_path}: {e}')
-
-
 
 def needs_processing(file_path):
     filename = os.path.basename(file_path)

@@ -90,6 +90,29 @@ def find_line_index(lines: list[list], search: str) -> int:
     logging.debug(f'pattern {search} :: not found')
     return -1
 
+def find_line_word(line: list, search: str):
+    """
+    Find a word within a line of word tuples in a case-insensitive manner.
+    
+    Args:
+        line: List of word tuples (x0, y0, x1, y1, word, block_no, line_no, word_no)
+        search: String to search for
+    
+    Returns:
+        tuple: Matching word tuple if found, None if not found
+    """
+    if not line or not search:
+        return None
+    
+    search = search.lower()
+    for word_tuple in line:
+        if word_tuple[4].lower() == search:
+            return word_tuple
+    
+    return None
+
+
+
 def line_to_str(line):
     """
     Convert word tuples into readable text strings.
