@@ -15,7 +15,7 @@ def to_filename(stamp: Stamp, rev):
     return f'SH_{tag}_{stamp.project}_{truncated_subject}_PR{stamp.drawing}_{rev}.pdf'
 
 def proccess_file(file_path):
-    if not needs_processing(file_path):
+    if not should_rename(file_path):
         logging.debug(f'ignored file {file_path}')
         return
 
@@ -57,7 +57,7 @@ def process_folder(folder_path):
         dirs = [path for _, path in items if os.path.isdir(path)]
         files = [path for _, path in items if os.path.isfile(path)]
         
-        files_to_process = filter(needs_processing, files)
+        files_to_process = filter(should_rename, files)
         
         # Convert to list to get length for logging
         files_to_process = list(files_to_process)
@@ -79,7 +79,7 @@ def process_folder(folder_path):
     except Exception as e:
         logging.error(f'Error processing folder {folder_path}: {e}')
 
-def needs_processing(file_path):
+def should_rename(file_path):
     filename = os.path.basename(file_path)
     return (not filename.startswith('SH_')) and filename.lower().endswith('.pdf')
 
