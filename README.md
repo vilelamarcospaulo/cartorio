@@ -25,29 +25,19 @@ $ pyinstaller --onefile --icon=sh.ico main.py
 
 ## Usage
 
-The tool can run in two modes:
-
-### Runner Mode
-Process all PDFs in a directory once:
+Process all PDFs in a directory:
 ```
-$ ./cartorio runner /path/to/directory
-```
-
-### Watch Mode
-Watch a directory for new PDFs and process them automatically:
-```
-$ ./cartorio watch /path/to/directory
+$ ./cartorio /path/to/directory
 ```
 
 ### Command Line Arguments
 ```
-usage: cartorio [-h] {runner,watch} path
+usage: cartorio [-h] path
 
-Run in watcher or runner mode to process a folder.
+Process a folder of PDF files.
 
 positional arguments:
-  {runner,watch}  Execution mode: runner or watcher
-  path           Path to the folder to process or observe
+  path           Path to the folder to process
 
 options:
   -h, --help     show this help message and exit
@@ -66,5 +56,5 @@ This makes it safe to run on existing directories with both processed and unproc
 Files will be renamed following the pattern:
 `[Project]_[DrawingType]_[RevisionNumber].pdf`
 
-or example: `Building-A_FloorPlan_Rev02.pdf`
+For example: `Building-A_FloorPlan_Rev02.pdf`
 
