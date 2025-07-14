@@ -1,4 +1,4 @@
-from lib.words import extract_words, group_lines
+from lib.canva import from_pdf
 from lib.stamp import Stamp, to_stamp
 from lib.revision import to_revision 
 
@@ -19,11 +19,15 @@ def proccess_file(file_path):
         logging.debug(f'ignored file {file_path}')
         return
 
-    words = extract_words(file_path)
-    lines = group_lines(words)
+    canva = from_pdf(file_path)
+    if not canva:
+        return
 
-    rev = to_revision(lines)
-    stamp = to_stamp(lines)
+    rev = to_revision(canva)
+    if not rev:
+        return
+
+    stamp = to_stamp(canva)
 
     if not stamp:
         logging.error('failed to load stamp')
