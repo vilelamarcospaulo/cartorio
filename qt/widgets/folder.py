@@ -19,7 +19,7 @@ class PathSelector(QWidget):
         self.path_input.setPlaceholderText(placeholder)
         layout.addWidget(self.path_input)
         
-        # Browse button
+        # Browse butt.n
         self.browse_button = QPushButton("Browse")
         self.browse_button.clicked.connect(self.browse_folder)
         layout.addWidget(self.browse_button)
@@ -28,6 +28,7 @@ class PathSelector(QWidget):
         """Open folder dialog"""
         folder = QFileDialog.getExistingDirectory(self, "Select Folder")
         if folder:
+            self.path_input.setText(folder)
             self.on_selected(folder)
     
 
@@ -35,6 +36,7 @@ def scan_path(path, predicate):
     """Scan the selected folder for files"""
     if not path or not os.path.exists(path):
         return
+
     # Scan for files
     files_found = [
         os.path.join(root, file)

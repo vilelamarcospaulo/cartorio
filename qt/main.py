@@ -53,6 +53,7 @@ class MainWindow(QMainWindow):
     def load_folder(self, path):
         files = scan_path(path, processor.should_rename)
         if not files:
+            logging.info(f'no file needs to be processed on {path}')
             return 
 
         self.file_list.set_files(files)
