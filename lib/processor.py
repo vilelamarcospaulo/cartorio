@@ -8,11 +8,15 @@ import os
 def to_filename(stamp: Stamp, rev):
     tag = stamp.to_tag() 
 
+    #format project
+    project = stamp.project.removeprefix("SINALIZAÇÃO")
+
+    # format subject
     pre_hyphen = stamp.subject.split('-')[0].strip()
     subject_words = pre_hyphen.split()
     truncated_subject = '_'.join(word[:5] for word in subject_words)
 
-    return f'SH_{tag}_{stamp.project}_{truncated_subject}_PR{stamp.drawing}_{rev}.pdf'
+    return f'SH_{tag}_{project}_{truncated_subject}_PR{stamp.drawing}_{rev}.pdf'
 
 def proccess_file(file_path):
     if not should_rename(file_path):
