@@ -11,9 +11,9 @@ class FileProcessorThread(QThread):
     finished_processing = Signal() # Signal when all processing is done
 
     # Get the root logger and add our handler
-    def __init__(self, files_to_process):
+    def __init__(self, files_to_process: list[str]):
         super().__init__()
-        self.files_to_process = files_to_process
+        self.files_to_process = files_to_process.copy()
         self.is_running = True
 
     def run(self):
@@ -23,25 +23,13 @@ class FileProcessorThread(QThread):
                 break
                 
             try:
-                self.process_file(file_path)
-                self.file_processed.emit(file_path)
-                processor.proccess_file(file_path)
-                
-                # Small delay to simulate processing time
-                time.sleep(1)
+                if processor.proccess_file(file_path):
+                    self.file_processed.emit(file_path)
                 
             except Exception as e:
                 logging.error(f'Error processing {file_path}: {str(e)}')
         
         self.finished_processing.emit()
-    
-    def process_file(self, file_path):
-        """
-        Replace this with your actual file processing function
-        This is just a demo that returns file size
-        """
-        file_size = os.path.getsize(file_path)
-        return f"Size: {file_size} bytes"
     
     def stop(self):
         """Stop the processing thread"""

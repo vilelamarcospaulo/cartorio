@@ -21,6 +21,9 @@ This tool solves a common problem in architectural workflows where PDFs generate
 $ python3 -m venv venv
 $ pip install -r requirements.txt
 $ pyinstaller --onefile --icon=sh.ico main.py
+
+-- For GUI app
+$ pyinstaller --onefile --noconsole --icon=icon.ico -n cartorio qt/main.py
 ```
 
 ## Usage

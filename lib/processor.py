@@ -9,7 +9,7 @@ def to_filename(stamp: Stamp, rev):
     tag = stamp.to_tag() 
 
     #format project
-    project = stamp.project.removeprefix("SINALIZAÇÃO")
+    project = stamp.project.removeprefix("SINALIZAÇÃO").strip()
 
     # format subject
     pre_hyphen = stamp.subject.split('-')[0].strip()
@@ -47,6 +47,7 @@ def proccess_file(file_path):
         try:
             os.rename(file_path, new_file_name)
             logging.info(f'File successfully renamed from {file_path} to {new_file_name}')
+            return True
         except OSError as e:
             logging.error(f'Error renaming file: {e}')
 

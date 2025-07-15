@@ -1,6 +1,7 @@
-import logging
 from PySide6.QtWidgets import (QHBoxLayout, QVBoxLayout, QLabel, QListWidget, QPushButton, QProgressBar, QWidget)
+from PySide6.QtCore import Qt
 
+import logging
 
 from qt.processor import FileProcessorThread
 
@@ -46,7 +47,12 @@ class FileListProcessor(QWidget):
         self._redraw()
 
     def remove_file(self, file: str):
-        pass
+        self.files.remove(file)
+
+        items = self.file_list.findItems(file, Qt.MatchFlag.MatchExactly)
+        for item in items:
+            row = self.file_list.row(item)
+            self.file_list.takeItem(row)
 
     def process_files(self):
         self.progress_bar.setMaximum(len(self.files))
